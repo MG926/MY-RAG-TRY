@@ -1,0 +1,196 @@
+OpenCode 快捷键与功能指南
+============================
+
+OpenCode 是一个开源 AI 编程助手，可在终端(TUI)、桌面应用或 IDE 扩展中使用。
+
+
+【启动】
+-----------------------------------------------------------
+
+- 进入项目目录后启动： opencode
+- 指定工作目录启动：   opencode /path/to/project
+- 初始化项目：         /init  （生成 AGENTS.md，帮助 AI 理解项目）
+
+
+【模式切换】
+-----------------------------------------------------------
+
+- Tab                        切换 Agent 模式（Plan 模式 / Build 模式）
+                              Plan 模式：只给出方案，不修改代码
+                              Build 模式：直接动手改代码
+- Shift+Tab                  反向切换 Agent 模式
+- Ctrl+T                     循环切换模型变体（如 reasoning 开/关）
+- Ctrl+A                     打开模型/Provider 选择列表
+- Ctrl+F                     收藏/取消收藏当前模型
+- F2                         切换到最近使用的模型
+- Shift+F2                   反向切换到最近使用的模型
+
+
+【Leader 键】
+-----------------------------------------------------------
+
+默认为 Ctrl+X。很多快捷键需要先按 Ctrl+X 再按对应的字母键。
+例如：Ctrl+X 然后 N = 新建会话。
+
+可在 tui.json 中自定义 leader 键和超时时间（默认 2000ms）。
+
+
+【会话(Session)管理】
+-----------------------------------------------------------
+
+- Ctrl+X N                   新建会话 (/new, /clear)
+- Ctrl+X L                   列出并切换会话 (/sessions)
+- Ctrl+R                     重命名当前会话
+- Ctrl+D                     删除当前会话 / 删除暂存(stash)
+- Ctrl+X C                   压缩/摘要当前会话 (/compact, /summarize)
+- Ctrl+X Q                   退出 OpenCode (/exit, /quit, /q)
+- Ctrl+G / Home              跳到对话开头
+- Ctrl+Alt+G / End           跳到对话末尾
+- Ctrl+Alt+Y                 向上滚动一行
+- Ctrl+Alt+E                 向下滚动一行
+- PageUp / Ctrl+Alt+B        向上翻页
+- PageDown / Ctrl+Alt+F      向下翻页
+- Ctrl+Alt+U                 向上翻半页
+- Ctrl+Alt+D                 向下翻半页
+
+
+【消息与编辑操作】
+-----------------------------------------------------------
+
+- Ctrl+X U                   撤销上一条消息及所有文件变更 (/undo)，可多次执行
+- Ctrl+X R                   重做被撤销的消息 (/redo)
+- Ctrl+X H                   切换隐藏内容显示（conceal）/ 切换提示开关 (/tips-toggle)
+- Ctrl+X Y                   复制当前消息
+- Ctrl+X E                   打开外部编辑器编写消息 (/editor)
+- Ctrl+X X                   导出对话为 Markdown 并打开 (/export)
+- Ctrl+X G                   查看会话时间线 (/session_timeline)
+
+
+【输入框快捷键】
+-----------------------------------------------------------
+
+- Enter                      发送消息
+- Shift+Enter                换行（部分终端需额外配置）
+- Ctrl+J / Alt+Enter         换行（备用）
+- Ctrl+A                     光标移到行首
+- Ctrl+E                     光标移到行尾
+- Ctrl+B / ←                 光标左移一个字符
+- Ctrl+F / →                 光标右移一个字符
+- Alt+B                      光标左移一个单词
+- Alt+F                      光标右移一个单词
+- Alt+A                      光标移到视觉行首
+- Alt+E                      光标移到视觉行尾
+- Ctrl+K                     删除光标到行尾
+- Ctrl+U                     删除光标到行首
+- Ctrl+W                     删除前一个单词
+- Alt+D                      删除后一个单词
+- Ctrl+Shift+D               删除整行
+- Ctrl+Backspace             删除前一个单词（备用）
+- Backspace                  删除前一个字符
+- Ctrl+D / Delete            删除光标处字符
+- Ctrl+Z / Ctrl+- / Super+Z  撤销输入（Windows 下 Ctrl+Z 也可用）
+- Ctrl+. / Super+Shift+Z     重做输入
+- Ctrl+C                     清空输入框
+- Ctrl+V                     粘贴
+- Ctrl+P                     打开命令面板（command list）
+- ↑ / ↓                      浏览历史输入记录
+
+
+【文件引用与 Bash 命令】
+-----------------------------------------------------------
+
+- @文件名                     模糊搜索并引用文件（文件内容自动加入对话）
+                              如：@packages/functions/src/api/index.ts
+- !命令                       执行 Shell 命令并将输出加入对话
+                              如：!ls -la  或  !git log --oneline -10
+- 拖拽图片到终端               图片会被扫描并加入对话上下文
+
+
+【侧边栏与视图】
+-----------------------------------------------------------
+
+- Ctrl+X B                   切换侧边栏显示/隐藏 (/sidebar_toggle)
+- Ctrl+X S                   查看状态面板 (/status_view)
+- Ctrl+Alt+K                 切换快捷键提示面板 (Which Key)
+- Ctrl+Alt+Shift+K           切换 Which Key 布局
+- Ctrl+Alt+Shift+P           切换 Which Key 等待模式
+- Ctrl+Alt+←/→               Which Key 组切换
+- Ctrl+Alt+↑/↓               Which Key 滚动
+
+
+【Slash 命令列表（输入 / 触发）】
+-----------------------------------------------------------
+
+- /connect                    添加/切换 AI Provider（连接 API）
+- /init                       分析项目，创建/更新 AGENTS.md
+- /compact 或 /summarize      压缩会话上下文，节省 token
+- /details                    切换工具执行的详细输出
+- /editor                     打开外部编辑器编写消息
+- /exit / /quit / /q          退出 OpenCode
+- /export                     导出当前对话为 Markdown
+- /help                       显示帮助信息
+- /models                     列出可用模型
+- /new 或 /clear              新建会话
+- /redo                       重做被撤销的操作
+- /sessions 或 /resume        列出并切换会话
+- /share                      分享当前会话链接
+- /unshare                    取消分享
+- /themes                     列出可选主题
+- /thinking                   切换思维链/推理块的显示
+- /undo                       撤销上一步操作及文件变更
+
+
+【配置文件说明】
+-----------------------------------------------------------
+
+项目级配置：   opencode.json / opencode.jsonc       （项目根目录）
+TUI 配置：     tui.json / tui.jsonc                 （项目根目录）
+规则文件：     AGENTS.md                             （项目根目录）
+自定义命令：   .opencode/commands/*.md              （项目内）
+全局命令：     ~/.config/opencode/commands/*.md     （用户级）
+
+
+【TUI 常用配置 (tui.json)】
+-----------------------------------------------------------
+
+{
+  "theme": "opencode",                  // 主题名称
+  "leader_timeout": 2000,               // leader 键等待超时(ms)
+  "scroll_speed": 3,                    // 滚动速度
+  "mouse": true,                        // 鼠标支持
+  "diff_style": "auto",                 // diff 显示：auto / stacked
+  "cursor": {                           // 光标样式
+    "style": "block",                   // block/underline/line/default
+    "blinking": true
+  },
+  "attention": {                        // 桌面通知和声音
+    "enabled": false,
+    "notifications": true,
+    "sound": true
+  }
+}
+
+
+【常用功能速查】
+-----------------------------------------------------------
+
+- 对话中 @ 引用文件       → 帮助 AI 精确理解上下文
+- 对话中 ! 执行命令       → 将命令结果作为上下文
+- Tab 切换 Plan/Build 模式 → Plan 先出方案，Build 直接动手
+- /undo 撤销              → 可多次撤销，需要 Git 仓库
+- /redo 重做              → 撤销后恢复
+- /init 初始化            → 首次使用时让 AI 了解项目结构
+- /compact 压缩           → 对话太长时压缩上下文以节省 token
+- Ctrl+P 命令面板         → 查找各种设置和命令
+- /share 分享             → 生成对话链接，方便协作调试
+- Ctrl+T 切换模型变体     → 在普通/推理模式间切换
+
+
+【Windows 特别说明】
+-----------------------------------------------------------
+
+- Shift+Enter 换行需在 Windows Terminal 的 settings.json 中配置，
+  详见：https://opencode.ai/docs/keybinds#windows-terminal
+- 推荐使用 WSL 获得更好的体验
+- Ctrl+Z 在 Windows 下默认为撤销输入（非暂停进程）
+- 安装方式：choco install opencode / scoop install opencode / npm install -g opencode-ai

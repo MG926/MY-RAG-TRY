@@ -1,0 +1,325 @@
+Git 从零到 GitHub 完整操作指南
+=====================================
+
+
+【一、从零建立 Git 仓库并关联 GitHub（完整流程）】
+-----------------------------------------------------------
+
+1. 在项目根目录初始化 Git 仓库：
+   git init
+
+2. 创建 .gitignore 文件，排除不需要版本控制的文件：
+   echo node_modules/ > .gitignore
+   echo .env >> .gitignore
+   echo __pycache__/ >> .gitignore
+   echo *.pyc >> .gitignore
+   echo .vscode/ >> .gitignore
+   echo *.exe >> .gitignore
+   echo dist/ >> .gitignore
+   echo build/ >> .gitignore
+
+3. 添加所有文件到暂存区：
+   git add .
+
+4. 确认文件状态，检查 .gitignore 是否生效：
+   git status
+
+5. 创建首次提交：
+   git commit -m "Initial commit"
+
+6. 将默认分支重命名为 main（GitHub 推荐）：
+   git branch -M main
+
+7. 在 GitHub 上创建同名空仓库（不要勾选 README/LICENSE/.gitignore，保持完全空白）
+   复制仓库的 SSH 地址（如 git@github.com:用户名/仓库名.git）
+
+8. 添加远程仓库地址：
+   git remote add origin git@github.com:用户名/仓库名.git
+
+9. 确认远程仓库地址无误：
+   git remote -v
+
+10. 推送代码到 GitHub 并设置上游分支：
+    git push -u origin main
+
+
+【二、SSH Key 配置（一次性，首次使用需配置）】
+-----------------------------------------------------------
+
+1. 检查本机是否已有 SSH Key：
+   ls ~/.ssh/id_rsa.pub
+
+   若提示"No such file"，则继续下一步；若已存在，可跳过生成步骤。
+
+2. 生成 SSH Key（一路回车即可）：
+   ssh-keygen -t rsa -b 4096 -C "你的邮箱@example.com"
+
+3. 复制公钥内容：
+   cat ~/.ssh/id_rsa.pub
+
+4. 登录 GitHub → Settings → SSH and GPG keys → New SSH key
+   粘贴公钥内容，保存。
+
+5. 测试连接：
+   ssh -T git@github.com
+
+   出现 "Hi xxx! You've successfully authenticated" 即成功。
+
+
+【三、从 GitHub 克隆已有仓库到本地】
+-----------------------------------------------------------
+
+1. 复制仓库的 SSH 或 HTTPS 地址
+
+2. 克隆到本地（SSH 方式）：
+   git clone git@github.com:用户名/仓库名.git
+
+3. 克隆指定分支：
+   git clone -b 分支名 git@github.com:用户名/仓库名.git
+
+
+【四、日常修改-提交-推送流程】
+-----------------------------------------------------------
+
+1. 查看有变动的文件：
+   git status
+
+2. 查看具体改动内容：
+   git diff
+
+3. 添加文件到暂存区：
+   git add .                    # 添加所有
+   git add 文件1 文件2          # 添加指定文件
+   git add -u                   # 仅添加已跟踪文件的修改
+
+4. 提交：
+   git commit -m "描述信息"
+
+5. 推送：
+   git push                     # 已设置上游分支时
+   git push origin main         # 指定推送到某分支
+
+
+【五、分支操作】
+-----------------------------------------------------------
+
+1. 查看分支：
+   git branch                   # 本地分支
+   git branch -a                # 含远程分支
+   git branch -r                # 仅远程分支
+
+2. 创建分支：
+   git branch 新分支名
+
+3. 切换分支：
+   git checkout 分支名
+   git switch 分支名            # Git 2.23+ 推荐
+
+4. 创建并切换到新分支（一步到位）：
+   git checkout -b 新分支名
+   git switch -c 新分支名       # Git 2.23+ 推荐
+
+5. 合并分支：
+   git merge 源分支名           # 将源分支合并到当前分支
+
+6. 删除分支：
+   git branch -d 分支名         # 删除已合并的分支
+   git branch -D 分支名         # 强制删除（未合并也删）
+
+7. 推送分支到远程：
+   git push -u origin 分支名    # 首次推送
+   git push                     # 后续推送
+
+8. 删除远程分支：
+   git push origin --delete 分支名
+
+9. 从远程拉取分支到本地：
+   git checkout -b 本地分支名 origin/远程分支名
+   git fetch origin 远程分支名:本地分支名
+
+
+【六、标签（Tag）管理】
+-----------------------------------------------------------
+
+1. 创建标签：
+   git tag 标签名                             # 轻量标签
+   git tag -a 标签名 -m "描述"                 # 附注标签
+
+2. 推送标签到远程：
+   git push origin 标签名                      # 推送单个标签
+   git push origin --tags                      # 推送所有标签
+
+3. 删除标签：
+   git tag -d 标签名                           # 删除本地标签
+   git push origin --delete 标签名             # 删除远程标签
+
+4. 查看标签：
+   git tag
+   git show 标签名                             # 查看标签详情
+
+
+【七、撤销与回退】
+-----------------------------------------------------------
+
+1. 撤销工作区修改（未 git add）：
+   git checkout -- 文件名
+   git restore 文件名                          # Git 2.23+ 推荐
+
+2. 撤销暂存区（已 git add，未 git commit）：
+   git reset HEAD 文件名
+   git restore --staged 文件名                 # Git 2.23+ 推荐
+
+3. 撤销最近一次提交（保留修改内容）：
+   git reset --soft HEAD~1
+
+4. 撤销最近一次提交（清除修改内容）：
+   git reset --hard HEAD~1
+
+5. 回退到指定 commit：
+   git reset --hard commit_id
+
+6. 回退后强制推送（慎用）：
+   git push --force
+
+7. 新建提交来抵消某次提交（安全，推荐）：
+   git revert commit_id
+
+
+【八、暂存工作现场（stash）】
+-----------------------------------------------------------
+
+1. 暂存当前修改：
+   git stash
+   git stash save "描述"
+
+2. 查看暂存列表：
+   git stash list
+
+3. 恢复最近一次暂存：
+   git stash pop                  # 恢复并删除 stash 记录
+   git stash apply                # 恢复但保留 stash 记录
+
+4. 恢复指定 stash：
+   git stash pop stash@{n}
+
+5. 删除所有 stash：
+   git stash clear
+
+
+【九、查看历史与对比】
+-----------------------------------------------------------
+
+1. 查看提交历史：
+   git log                        # 详细日志
+   git log --oneline              # 单行简略
+   git log --oneline --graph      # 带分支图
+   git log -3                     # 最近 3 条
+
+2. 查看某次提交的详情：
+   git show commit_id
+
+3. 查看某次提交改动了哪些文件：
+   git diff-tree --no-commit-id -r commit_id
+
+4. 查看文件每一行的最后修改人和时间：
+   git blame 文件名
+
+5. 对比差异：
+   git diff                       # 工作区 vs 暂存区
+   git diff --staged              # 暂存区 vs 最新提交
+   git diff commit1 commit2       # 两次提交之间
+   git diff 分支1 分支2           # 两个分支之间
+
+
+【十、远程仓库管理】
+-----------------------------------------------------------
+
+1. 查看远程仓库：
+   git remote -v
+
+2. 添加远程仓库：
+   git remote add origin 地址
+
+3. 修改远程仓库地址：
+   git remote set-url origin 新地址
+
+4. 删除远程仓库关联：
+   git remote remove origin
+
+5. 添加多个远程仓库（如同时推送 GitHub 和 Gitee）：
+   git remote add gitee git@gitee.com:用户名/仓库.git
+   git push gitee main
+
+6. 拉取远程最新代码：
+   git pull
+   git pull origin main
+
+7. 仅获取远程更新但不合并：
+   git fetch
+   git fetch origin
+
+
+【十一、Git 配置】
+-----------------------------------------------------------
+
+1. 设置用户名和邮箱：
+   git config --global user.name "你的用户名"
+   git config --global user.email "你的邮箱"
+
+2. 查看当前配置：
+   git config --list
+   git config --global --list
+
+3. 设置默认分支名为 main：
+   git config --global init.defaultBranch main
+
+4. 配置别名（简化命令）：
+   git config --global alias.co checkout
+   git config --global alias.br branch
+   git config --global alias.st status
+
+
+【十二、常见问题处理】
+-----------------------------------------------------------
+
+1. HTTPS 推送报 403 或认证失败：
+   → 需配置 GitHub Personal Access Token，用 token 代替密码
+
+2. 远程仓库有 README 等文件，本地 push 被拒：
+   git pull origin main --allow-unrelated-histories
+   解决冲突后 git push
+
+3. 误提交了大文件/敏感文件，想从历史中彻底清除：
+   git filter-branch --force --index-filter \
+     "git rm --cached --ignore-unmatch 文件路径" \
+     --prune-empty --tag-name-filter cat -- --all
+   git push --force --all
+
+4. 合并冲突时终止合并：
+   git merge --abort
+
+5. 查看某一行代码是谁写的：
+   git blame 文件路径 -L 起始行,结束行
+
+6. 忽略已跟踪文件的后续修改：
+   git update-index --assume-unchanged 文件路径
+
+
+【速查表：最常用命令】
+-----------------------------------------------------------
+
+  git init                  初始化仓库
+  git clone <url>           克隆远程仓库
+  git status                查看状态
+  git add .                 暂存所有修改
+  git commit -m "msg"       提交
+  git push                  推送到远程
+  git pull                  拉取远程更新
+  git branch                查看本地分支
+  git checkout -b name      创建并切换分支
+  git merge name            合并分支
+  git log --oneline         查看提交历史
+  git stash                 暂存现场
+  git stash pop             恢复暂存
+  git reset --hard HEAD~1   回退一次提交
+  git remote -v             查看远程仓库
