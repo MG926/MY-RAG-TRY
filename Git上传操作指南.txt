@@ -8,15 +8,19 @@ Git 从零到 GitHub 完整操作指南
 1. 在项目根目录初始化 Git 仓库：
    git init
 
-2. 创建 .gitignore 文件，排除不需要版本控制的文件：
-   echo node_modules/ > .gitignore
-   echo .env >> .gitignore
-   echo __pycache__/ >> .gitignore
-   echo *.pyc >> .gitignore
-   echo .vscode/ >> .gitignore
-   echo *.exe >> .gitignore
-   echo dist/ >> .gitignore
-   echo build/ >> .gitignore
+2. 创建 .gitignore 文件（Windows 须用 UTF-8 编码，echo 默认写 UTF-16 会导致 Git 无法识别）：
+
+   Set-Content -Path .gitignore -Value @"
+   node_modules/
+   .env
+   __pycache__/
+   *.pyc
+   .vscode/
+   *.exe
+   dist/
+   build/
+   venv/
+   "@ -Encoding UTF8
 
 3. 添加所有文件到暂存区：
    git add .
