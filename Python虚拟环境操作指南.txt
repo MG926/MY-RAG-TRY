@@ -11,7 +11,7 @@ Python 虚拟环境操作指南
    示例：python -m venv myenv
 
 2. 激活（需先 cd 到环境文件夹的上级目录）：
-   .\venv\Scripts\activate
+   .\.venv\Scripts\activate
     Windows CMD：
     环境名\Scripts\activate.bat
 

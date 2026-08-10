@@ -10,17 +10,8 @@ Git 从零到 GitHub 完整操作指南
 
 2. 创建 .gitignore 文件（Windows 须用 UTF-8 编码，echo 默认写 UTF-16 会导致 Git 无法识别）：
 
-   Set-Content -Path .gitignore -Value @"
-   node_modules/
-   .env
-   __pycache__/
-   *.pyc
-   .vscode/
-   *.exe
-   dist/
-   build/
-   venv/
-   "@ -Encoding UTF8
+   Set-Content -Path .gitignore -Value .venv/ -Encoding UTF8
+   Add-Content -Path .gitignore -Value .venv/ -Encoding UTF8
 
 3. 添加所有文件到暂存区：
    git add .
