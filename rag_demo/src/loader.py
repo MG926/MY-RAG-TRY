@@ -2,7 +2,7 @@ import pdfplumber
 import pandas as pd
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-""""该模块负责文件读取，目前仅支持pdf形式""""
+"""该模块负责文件读取，目前仅支持pdf形式"""
 class loader:
     def read_pdf(self, pdf_path: str):
         """读取pdf文件"""
