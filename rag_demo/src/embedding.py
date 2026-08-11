@@ -2,9 +2,9 @@
 """该模块负责向量化操作"""
 from sentence_transformers import SentenceTransformer
 import chromadb
-import loader
+# import loader
 class Embedding:
-    def bge_embedding(self, all_chunks:list[dict], bge_path:str ="BAAI/bge-small-zh-v1.5", collection_name:str = "default"):
+    def bge_embedding(self, all_chunks:list[dict], bge_path:str ="BAAI/bge-small-zh-v1.5", collection_name:str = "default", db_path:str="F:/my_RAG/rag_demo/chroma_db"):
         #输入的chunks格式为[{"content":chunks,"metadata":{"page_num": idx}}]
         #采用BGE方法，默认联网下载，如果有本地模型则上传至bge_path，默认采用cpu
         bge_model = SentenceTransformer(bge_path,device="cpu")
@@ -24,7 +24,7 @@ class Embedding:
 
         # 存入向量库
         #本地化存储
-        client = chromadb.PersistentClient(path="F:/my_RAG/rag_demo/chroma_db")
+        client = chromadb.PersistentClient(path=db_path)
         #向量表名字命名为传入的pdf名字，没有则为default
         collection = client.get_or_create_collection(name=collection_name)
         #将数据存入向量库
