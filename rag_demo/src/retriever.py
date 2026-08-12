@@ -5,16 +5,18 @@ import chromadb
 # import embedding
 # import loader
 class Retriever:
-    def recall(self, query:str, top_k:int =5, bge_path:str ="BAAI/bge-small-zh-v1.5", collection_name:str = "default", db_path:str= "F:/my_RAG/rag_demo/chroma_db"):
+    def __init__(self,bge_path:str ="BAAI/bge-small-zh-v1.5", db_path:str= "F:/my_RAG/rag_demo/chroma_db"):
+        #开启BGE模型
+        self.recall_model = SentenceTransformer(bge_path,device="cpu")
+        #开启向量库
+        self.client = chromadb.PersistentClient(path=db_path)
+    def recall(self, query:str, top_k:int =5, collection_name:str = "default"):
         #BGE的问题必须要加提示
         instruct_query = f"为这个句子生成表示以用于检索：{query}"
-        #开启模型
-        recall_model = SentenceTransformer(bge_path,device="cpu")
-        #开启向量库
-        client = chromadb.PersistentClient(path=db_path)
-        recall_collection = client.get_or_create_collection(name=collection_name)
+        #查询pdf文档的向量库
+        recall_collection = self.client.get_or_create_collection(name=collection_name)
         #给问题进行编码
-        query_embedding = recall_model.encode(
+        query_embedding = self.recall_model.encode(
             instruct_query,
             normalize_embeddings=True
         )
